@@ -1,12 +1,9 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"time"
-
-	"github.com/joho/godotenv"
 )
 
 type HTTPServer struct {
@@ -50,11 +47,6 @@ func duration(s string) time.Duration {
 }
 
 func Load() (Configuration, error) {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-	}
-
 	server := HTTPServer{
 		IdleTimeout:  duration(os.Getenv("HTTP_SERVER_IDLE_TIMEOUT")),
 		Port:         toInt(os.Getenv("HTTP_SERVER_PORT")),
@@ -70,11 +62,11 @@ func Load() (Configuration, error) {
 
 	rpc := TodoGRPCServer{
 		TodoGRPCServerUrl: os.Getenv("GRPC_SERVER_URL"),
-	} 
+	}
 
 	var cfg Configuration = Configuration{
-		HTTPServer: server,
-		Database:   db,
+		HTTPServer:     server,
+		Database:       db,
 		TodoGRPCServer: rpc,
 	}
 
